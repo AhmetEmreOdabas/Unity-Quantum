@@ -1,0 +1,4 @@
+component PlayerStats
+{
+	asset_ref<PlayerStatsAsset> statsAsset;
+}

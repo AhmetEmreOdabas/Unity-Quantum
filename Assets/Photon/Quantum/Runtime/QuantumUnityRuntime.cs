@@ -1384,6 +1384,10 @@ namespace Quantum {
     private QuantumEvent() {
       throw new NotSupportedException();
     }
+
+    public static void Subscribe<T>(object onAttackEvent) {
+      throw new NotImplementedException();
+    }
   }
 
   /// <summary>
