@@ -1,1 +1,3 @@
 signal OnRobotHit(entity_ref bullet, entity_ref robot, FP damage);
+signal OnRobotDeath(entity_ref deadPlayer, entity_ref killer);
+signal OnRobotRespawn(entity_ref player);

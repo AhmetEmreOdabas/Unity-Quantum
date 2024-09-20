@@ -52,16 +52,22 @@ namespace Quantum {
   public unsafe partial class Frame {
     public unsafe partial struct FrameEvents {
       static partial void GetEventTypeCountCodeGen(ref Int32 eventCount) {
-        eventCount = 2;
+        eventCount = 6;
       }
       static partial void GetParentEventIDCodeGen(Int32 eventID, ref Int32 parentEventID) {
         switch (eventID) {
+          case EventOnRobotTakeDamage.ID: parentEventID = EventRobotEvent.ID; return;
+          case EventOnRobotDeath.ID: parentEventID = EventRobotEvent.ID; return;
           default: break;
         }
       }
       static partial void GetEventTypeCodeGen(Int32 eventID, ref System.Type result) {
         switch (eventID) {
           case EventOnBulletDestroyed.ID: result = typeof(EventOnBulletDestroyed); return;
+          case EventRobotEvent.ID: result = typeof(EventRobotEvent); return;
+          case EventOnRobotTakeDamage.ID: result = typeof(EventOnRobotTakeDamage); return;
+          case EventOnRobotDeath.ID: result = typeof(EventOnRobotDeath); return;
+          case EventOnWeaponShoot.ID: result = typeof(EventOnWeaponShoot); return;
           default: break;
         }
       }
@@ -72,6 +78,28 @@ namespace Quantum {
         ev.BulletPosition = BulletPosition;
         ev.BulletDirection = BulletDirection;
         ev.BulletData = BulletData;
+        _f.AddEvent(ev);
+        return ev;
+      }
+      public EventOnRobotTakeDamage OnRobotTakeDamage(EntityRef Robot, FP Damage, EntityRef Source) {
+        var ev = _f.Context.AcquireEvent<EventOnRobotTakeDamage>(EventOnRobotTakeDamage.ID);
+        ev.Robot = Robot;
+        ev.Damage = Damage;
+        ev.Source = Source;
+        _f.AddEvent(ev);
+        return ev;
+      }
+      public EventOnRobotDeath OnRobotDeath(EntityRef Robot, EntityRef Killer) {
+        if (_f.IsPredicted) return null;
+        var ev = _f.Context.AcquireEvent<EventOnRobotDeath>(EventOnRobotDeath.ID);
+        ev.Robot = Robot;
+        ev.Killer = Killer;
+        _f.AddEvent(ev);
+        return ev;
+      }
+      public EventOnWeaponShoot OnWeaponShoot(EntityRef Robot) {
+        var ev = _f.Context.AcquireEvent<EventOnWeaponShoot>(EventOnWeaponShoot.ID);
+        ev.Robot = Robot;
         _f.AddEvent(ev);
         return ev;
       }
@@ -106,6 +134,91 @@ namespace Quantum {
         hash = hash * 31 + BulletPosition.GetHashCode();
         hash = hash * 31 + BulletDirection.GetHashCode();
         hash = hash * 31 + BulletData.GetHashCode();
+        return hash;
+      }
+    }
+  }
+  public abstract unsafe partial class EventRobotEvent : EventBase {
+    public new const Int32 ID = 2;
+    public EntityRef Robot;
+    protected EventRobotEvent(Int32 id, EventFlags flags) : 
+        base(id, flags) {
+    }
+    public new QuantumGame Game {
+      get {
+        return (QuantumGame)base.Game;
+      }
+      set {
+        base.Game = value;
+      }
+    }
+    public override Int32 GetHashCode() {
+      unchecked {
+        var hash = 43;
+        hash = hash * 31 + Robot.GetHashCode();
+        return hash;
+      }
+    }
+  }
+  public unsafe partial class EventOnRobotTakeDamage : EventRobotEvent {
+    public new const Int32 ID = 3;
+    public FP Damage;
+    public EntityRef Source;
+    protected EventOnRobotTakeDamage(Int32 id, EventFlags flags) : 
+        base(id, flags) {
+    }
+    public EventOnRobotTakeDamage() : 
+        base(3, EventFlags.Server|EventFlags.Client) {
+    }
+    public override Int32 GetHashCode() {
+      unchecked {
+        var hash = 47;
+        hash = hash * 31 + Robot.GetHashCode();
+        hash = hash * 31 + Damage.GetHashCode();
+        hash = hash * 31 + Source.GetHashCode();
+        return hash;
+      }
+    }
+  }
+  public unsafe partial class EventOnRobotDeath : EventRobotEvent {
+    public new const Int32 ID = 4;
+    public EntityRef Killer;
+    protected EventOnRobotDeath(Int32 id, EventFlags flags) : 
+        base(id, flags) {
+    }
+    public EventOnRobotDeath() : 
+        base(4, EventFlags.Server|EventFlags.Client|EventFlags.Synced) {
+    }
+    public override Int32 GetHashCode() {
+      unchecked {
+        var hash = 53;
+        hash = hash * 31 + Robot.GetHashCode();
+        hash = hash * 31 + Killer.GetHashCode();
+        return hash;
+      }
+    }
+  }
+  public unsafe partial class EventOnWeaponShoot : EventBase {
+    public new const Int32 ID = 5;
+    public EntityRef Robot;
+    protected EventOnWeaponShoot(Int32 id, EventFlags flags) : 
+        base(id, flags) {
+    }
+    public EventOnWeaponShoot() : 
+        base(5, EventFlags.Server|EventFlags.Client) {
+    }
+    public new QuantumGame Game {
+      get {
+        return (QuantumGame)base.Game;
+      }
+      set {
+        base.Game = value;
+      }
+    }
+    public override Int32 GetHashCode() {
+      unchecked {
+        var hash = 59;
+        hash = hash * 31 + Robot.GetHashCode();
         return hash;
       }
     }

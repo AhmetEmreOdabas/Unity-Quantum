@@ -19,6 +19,7 @@ namespace Quantum
             {
                 transform->Position = new FPVector3(0, 1, 0);
             }
+            f.Signals.OnRobotRespawn(entity);
         }
         public override void Update(Frame f, ref Filter filter)
         {

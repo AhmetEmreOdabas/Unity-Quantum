@@ -1,0 +1,12 @@
+abstract event RobotEvent {
+	entity_ref Robot; 	
+}
+
+event OnRobotTakeDamage : RobotEvent {
+	FP Damage;
+	entity_ref Source; 	
+}
+
+synced event OnRobotDeath : RobotEvent {
+	entity_ref Killer; 	
+}

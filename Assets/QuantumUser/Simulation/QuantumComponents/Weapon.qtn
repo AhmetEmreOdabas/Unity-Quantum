@@ -1,0 +1,12 @@
+component Weapon {
+	Boolean IsRecharging;
+	Int32 CurrentAmmo;
+	FP FireRateTimer;
+	FP DelayToStartRechargeTimer;
+	FP RechargeRate;
+	FP ChargeTime;
+	asset_ref<WeaponData> WeaponData;
+}
+event OnWeaponShoot{
+ 	entity_ref Robot;
+}

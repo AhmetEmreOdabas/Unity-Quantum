@@ -19,6 +19,7 @@ namespace Quantum {
       Quantum.Input i = new Quantum.Input();
       i.Direction = new FPVector2(playerInput.Joystick.Horizontal.ToFP(), playerInput.Joystick.Vertical.ToFP());
       i.Jump = playerInput.JumpWasPressed;
+      i.Fire = playerInput.FireWasPressed;
       callback.SetInput(i, DeterministicInputFlags.Repeatable);
     }
   }

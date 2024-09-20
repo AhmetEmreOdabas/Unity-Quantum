@@ -73,10 +73,12 @@ namespace Quantum.Prototypes {
   public unsafe partial class InputPrototype : StructPrototype {
     public FPVector2 Direction;
     public Button Jump;
+    public Button Fire;
     partial void MaterializeUser(Frame frame, ref Quantum.Input result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.Input result, in PrototypeMaterializationContext context = default) {
         result.Direction = this.Direction;
         result.Jump = this.Jump;
+        result.Fire = this.Fire;
         MaterializeUser(frame, ref result, in context);
     }
   }
@@ -107,6 +109,60 @@ namespace Quantum.Prototypes {
     }
     public void Materialize(Frame frame, ref Quantum.PlayerStats result, in PrototypeMaterializationContext context = default) {
         result.statsAsset = this.statsAsset;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.Status))]
+  public unsafe partial class StatusPrototype : ComponentPrototype<Quantum.Status> {
+    public FP CurrentHealth;
+    public QBoolean IsDead;
+    public FP RespawnTimer;
+    public FP RegenTimer;
+    public FP InvincibleTimer;
+    public Int32 DisconnectedTicks;
+    public AssetRef<StatusData> StatusData;
+    partial void MaterializeUser(Frame frame, ref Quantum.Status result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.Status component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.Status result, in PrototypeMaterializationContext context = default) {
+        result.CurrentHealth = this.CurrentHealth;
+        result.IsDead = this.IsDead;
+        result.RespawnTimer = this.RespawnTimer;
+        result.RegenTimer = this.RegenTimer;
+        result.InvincibleTimer = this.InvincibleTimer;
+        result.DisconnectedTicks = this.DisconnectedTicks;
+        result.StatusData = this.StatusData;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.Weapon))]
+  public unsafe partial class WeaponPrototype : ComponentPrototype<Quantum.Weapon> {
+    public QBoolean IsRecharging;
+    public Int32 CurrentAmmo;
+    public FP FireRateTimer;
+    public FP DelayToStartRechargeTimer;
+    public FP RechargeRate;
+    public FP ChargeTime;
+    public AssetRef<WeaponData> WeaponData;
+    partial void MaterializeUser(Frame frame, ref Quantum.Weapon result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.Weapon component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.Weapon result, in PrototypeMaterializationContext context = default) {
+        result.IsRecharging = this.IsRecharging;
+        result.CurrentAmmo = this.CurrentAmmo;
+        result.FireRateTimer = this.FireRateTimer;
+        result.DelayToStartRechargeTimer = this.DelayToStartRechargeTimer;
+        result.RechargeRate = this.RechargeRate;
+        result.ChargeTime = this.ChargeTime;
+        result.WeaponData = this.WeaponData;
         MaterializeUser(frame, ref result, in context);
     }
   }
