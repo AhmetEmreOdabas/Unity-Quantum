@@ -52,7 +52,7 @@ namespace Quantum {
   public unsafe partial class Frame {
     public unsafe partial struct FrameEvents {
       static partial void GetEventTypeCountCodeGen(ref Int32 eventCount) {
-        eventCount = 1;
+        eventCount = 2;
       }
       static partial void GetParentEventIDCodeGen(Int32 eventID, ref Int32 parentEventID) {
         switch (eventID) {
@@ -61,8 +61,52 @@ namespace Quantum {
       }
       static partial void GetEventTypeCodeGen(Int32 eventID, ref System.Type result) {
         switch (eventID) {
+          case EventOnBulletDestroyed.ID: result = typeof(EventOnBulletDestroyed); return;
           default: break;
         }
+      }
+      public EventOnBulletDestroyed OnBulletDestroyed(Int32 BulletRefHashCode, EntityRef Robot, FPVector3 BulletPosition, FPVector3 BulletDirection, AssetRef<BulletData> BulletData) {
+        var ev = _f.Context.AcquireEvent<EventOnBulletDestroyed>(EventOnBulletDestroyed.ID);
+        ev.BulletRefHashCode = BulletRefHashCode;
+        ev.Robot = Robot;
+        ev.BulletPosition = BulletPosition;
+        ev.BulletDirection = BulletDirection;
+        ev.BulletData = BulletData;
+        _f.AddEvent(ev);
+        return ev;
+      }
+    }
+  }
+  public unsafe partial class EventOnBulletDestroyed : EventBase {
+    public new const Int32 ID = 1;
+    public Int32 BulletRefHashCode;
+    public EntityRef Robot;
+    public FPVector3 BulletPosition;
+    public FPVector3 BulletDirection;
+    public AssetRef<BulletData> BulletData;
+    protected EventOnBulletDestroyed(Int32 id, EventFlags flags) : 
+        base(id, flags) {
+    }
+    public EventOnBulletDestroyed() : 
+        base(1, EventFlags.Server|EventFlags.Client) {
+    }
+    public new QuantumGame Game {
+      get {
+        return (QuantumGame)base.Game;
+      }
+      set {
+        base.Game = value;
+      }
+    }
+    public override Int32 GetHashCode() {
+      unchecked {
+        var hash = 41;
+        hash = hash * 31 + BulletRefHashCode.GetHashCode();
+        hash = hash * 31 + Robot.GetHashCode();
+        hash = hash * 31 + BulletPosition.GetHashCode();
+        hash = hash * 31 + BulletDirection.GetHashCode();
+        hash = hash * 31 + BulletData.GetHashCode();
+        return hash;
       }
     }
   }

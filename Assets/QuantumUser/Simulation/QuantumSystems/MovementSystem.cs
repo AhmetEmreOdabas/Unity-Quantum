@@ -6,7 +6,6 @@ namespace Quantum
     [Preserve]
     public unsafe class MovementSystem : SystemMainThreadFilter<MovementSystem.Filter>, ISignalOnPlayerAdded
     {
-        private FP _attackCooldown = 0;
         public void OnPlayerAdded(Frame f, PlayerRef player, bool firstTime)
         {
             var runtimePlayer = f.GetPlayerData(player);
@@ -21,7 +20,6 @@ namespace Quantum
                 transform->Position = new FPVector3(0, 1, 0);
             }
         }
-
         public override void Update(Frame f, ref Filter filter)
         {
             var input = f.GetPlayerInput(filter.PlayerLink->Player);   

@@ -1,0 +1,1 @@
+signal OnRobotHit(entity_ref bullet, entity_ref robot, FP damage);
