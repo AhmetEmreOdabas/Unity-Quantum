@@ -244,12 +244,6 @@ MonoBehaviour:
     StartDisabled: 0
     Children: []
   - SystemType:
-      AssemblyQualifiedName: Quantum.Core.NavigationSystem, Quantum.Simulation, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-    SystemName: 
-    StartDisabled: 0
-    Children: []
-  - SystemType:
       AssemblyQualifiedName: Quantum.Core.EntityPrototypeSystem, Quantum.Simulation,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     SystemName: 
@@ -364,7 +358,7 @@ MonoBehaviour:
     RawValue: 13107
   MaxContacts: 4
   LayerMask:
-    BitMask: -1
+    BitMask: 119
   UseManifoldNormal: 0
   AirControl: 1
   Acceleration:

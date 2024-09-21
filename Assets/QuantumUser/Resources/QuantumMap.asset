@@ -22,8 +22,8 @@ MonoBehaviour:
   Scene: QuantumGameScene
   ScenePath: Assets/QuantumUser/Scenes/QuantumGameScene.unity
   SceneGuid: e252d8a4857a1a546afe0b509a4ebd5b
-  WorldSize: 256
-  BucketsCount: 16
+  WorldSize: 48
+  BucketsCount: 8
   BucketsSubdivisions: 8
   BucketingAxis: 0
   SortingAxis: 1
@@ -34,8 +34,8 @@ MonoBehaviour:
     Id:
       Value: 396324658538822533
   SerializeTrianglesMetadata: 0
-  GridSizeX: 64
-  GridSizeY: 64
+  GridSizeX: 20
+  GridSizeY: 20
   GridNodeSize: 4
   NavMeshLinks: []
   Regions: []
